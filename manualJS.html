@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>manualJS.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<div style="text-align: center" class="contenedor" >
+  <img src="./img/pngegg.png" width="90px" />
+  <h1 class="centrado">Java Script - CheckPoint7</h1>
+</div>
+<h2 id="%C2%BFqu%C3%A9-diferencia-a-javascript-de-cualquier-otro-lenguaje">¿Qué diferencia a Javascript de cualquier otro lenguaje?</h2>
+<p>JavaScript es un lenguaje de programación, de secuencias de comandos, aporta soluciones eficaces en la mayoría de los ámbitos de la tecnología. Por este motivo se ha convertido en una de las herramientas más populares y esenciales para el desarrollo web.
+Permite crear contenido de actualización dinámica, controlar multimedia, animar imágenes, etc...</p>
+<p>La gran <mark>diferencia</mark> con otros lenguajes de programación es que podemos ejecutar javascript directamente en cualquier navegador, no es necesario ningún programa, aplicación o herramienta para comenzar a programar en JavaScript.</p>
+<p>Ejemplo de un mensaje por consola:</p>
+<pre class="hljs"><code><div>console.log('Mensaje Consola')
+Mensaje Consola
+</div></code></pre>
+<p>A continuación las ventajas y desventajas de JavaScript:</p>
+<h3 id="ventajas-de-javascript">Ventajas de JavaScript</h3>
+<ul>
+<li>
+<p>Interactividad en tiempo real:
+Se refiere a la capacidad de una página web para responder y adaptarse a las acciones del usuario en el momento en que ocurren, de forma inmediata, sin la necesidad de recargar la página por completo. Esto crea una experiencia de usuario más dinámica, atractiva y fluida.</p>
+</li>
+<li>
+<p>Detección y respuesta a eventos:
+Los eventos son acciones (hacer clic en un botón, mover el ratón sobre un elemento o escribir en un campo de texto) todos ellos ocurren en una página web. Este lenguaje permite detectar y responder a estos eventos mediante controladores de eventos. Esto sirve, por ejemplo, para mostrar información adicional cuando un usuario pasa el ratón sobre un elemento o para ejecutar una acción específica al hacer clic en un botón.</p>
+</li>
+<li>
+<p>Manipulación sencilla del DOM:
+El DOM (Document Object Model) es una representación en la memoria de la estructura y contenido de una página web. JavaScript agiliza el acceso y la manipulación de elementos del DOM, es decir, te ayuda a cambiar el contenido, estilo y atributos de los elementos en respuesta a eventos. Por ejemplo, puedes cambiar el texto de un elemento, modificar su estilo visual o agregar elementos nuevos al DOM.</p>
+</li>
+<li>
+<p>Creación de formularios interactivos:
+Puedes mejorar la interacción con formularios al validar datos ingresados por el usuario. De esta manera, mostrarás mensajes de error instantáneos cuando un usuario ingresa datos incorrectos o incompletos en un campo del formulario.</p>
+</li>
+<li>
+<p>Innovación en la carga de contenido dinámico:
+Mediante la técnica de AJAX (Asynchronous JavaScript and XML), esta herramienta carga y muestra contenido adicional en una página sin recurrir a una recarga. Esto es útil para mostrar comentarios, resultados de búsqueda o actualizaciones de forma rápida.</p>
+</li>
+<li>
+<p>Animación y efectos visuales para los sitios web:
+JavaScript se utiliza para crear animaciones y efectos visuales en una página web. De esta manera, puedes hacer que los elementos se muevan, cambien de tamaño, se desvanezcan y realicen otras transiciones de manera suave y atractiva.</p>
+</li>
+<li>
+<p>Desarrollo de juegos y aplicaciones interactivas:
+También es una gran plataforma para desarrollar juegos y aplicaciones interactivas dentro de los navegadores. Muchos videojuegos en línea, simuladores y apps educativas utilizan este lenguaje de programación para crear experiencias inmersivas y entretenidas.</p>
+</li>
+<li>
+<p>Comunicación inmediata entre el cliente y el servidor:
+Con tecnologías como WebSockets, esta herramienta permite establecer conexiones de comunicación bidireccional entre el cliente y el servidor. Esto es esencial para aplicaciones en tiempo real, como chats en línea y colaboración en tiempo real.</p>
+</li>
+<li>
+<p>Amplia adopción en el desarrollo web:
+JavaScript es uno de los lenguajes de programación más populares en el mundo del desarrollo web. Esto significa que hay una gran cantidad de recursos, tutoriales y comunidades en línea disponibles para sus usuarios.</p>
+</li>
+<li>
+<p>Ejecución constante en el lado del cliente:
+Este lenguaje de programación puede realizar acciones sin necesidad de comunicarse de manera constante con el servidor. Esto ayuda a reducir la carga del servidor y mejora la eficiencia de las aplicaciones.</p>
+</li>
+<li>
+<p>Comunicación asíncrona con el servidor:
+Asimismo, permite la comunicación asíncrona con el servidor a través de tecnologías como AJAX (Asynchronous JavaScript and XML). Es decir, los datos pueden cargarse o enviarse al servidor en segundo plano.</p>
+</li>
+<li>
+<p>Uso versátil para desarrolladores:
+Con la introducción de Node.js, JavaScript también se puede utilizar en el lado del servidor, lo que permite a los desarrolladores utilizar el mismo lenguaje en toda la pila de tecnología.</p>
+</li>
+<li>
+<p>Amplio repertorio de bibliotecas y frameworks:
+Existen diversas bibliotecas y frameworks de JavaScript (como jQuery, React, Angular y Vue.js) que simplifican tareas comunes como la manipulación del DOM (Document Object Model), el desarrollo de interfaces de usuario y la creación de acciones automatizadas programables.</p>
+</li>
+<li>
+<p>Facilidad de aprendizaje:
+JavaScript es fácil de aprender desde cero, ya que cuenta con una sintaxis clara y flexible.</p>
+</li>
+<li>
+<p>Evolución continua en cada nueva versión:
+Este lenguaje de programación evoluciona y mejora de forma constante. Sus nuevas versiones, como ECMAScript 6 (ES6) y posteriores, introducen características más modernas y poderosas que permiten a los desarrolladores escribir un código más limpio y eficiente.</p>
+</li>
+<li>
+<p>Compatibilidad con múltiples navegadores:
+Los navegadores modernos han mejorado de manera significativa en términos de soporte para el JavaScript estándar, lo que facilita la creación de aplicaciones consistentes en diferentes plataformas.</p>
+</li>
+</ul>
+<h3 id="desventajas-de-javascript">Desventajas de JavaScript</h3>
+<ul>
+<li>
+<p>Falta de compatibilidad entre navegadores:
+Pese a que la compatibilidad entre navegadores ha mejorado, todavía puede haber diferencias en cómo interpretan y ejecutan el código JavaScript. Esto puede requerir ajustes y pruebas adicionales para garantizar un funcionamiento uniforme en diferentes navegadores.</p>
+</li>
+<li>
+<p>Nivel de seguridad deficiente:
+Como su código se ejecuta en el navegador del usuario, existe el riesgo de que algunos exploten sus vulnerabilidades para llevar a cabo ataques, como inyección de código o cross-site scripting (XSS). Por ello, los desarrolladores deben tomar medidas para asegurar su código y prevenir estos ataques.</p>
+</li>
+<li>
+<p>Bajo rendimiento en aplicaciones complejas:
+Esta herramienta es un lenguaje interpretado, lo que puede afectar el rendimiento en comparación con lenguajes compilados. Aunque los navegadores modernos han mejorado su velocidad de ejecución, el rendimiento puede ser un problema en aplicaciones web muy complejas o en dispositivos con recursos limitados.</p>
+</li>
+<li>
+<p>Funcionalidad sujeta al uso del cliente:
+Si un usuario deshabilita este recurso en su navegador o este no lo admite, la funcionalidad de la aplicación puede verse afectada.</p>
+</li>
+<li>
+<p>Dificultad para indexar en motores de búsqueda:
+Los motores de búsqueda suelen tener dificultades para indexar contenido generado dinámicamente por este lenguaje de programación. Aunque algunos han mejorado en este aspecto, todavía puede haber desafíos para garantizar que el contenido sea indexado de forma correcta.</p>
+</li>
+<li>
+<p>Mantenimiento y legibilidad complicados:
+A medida que las aplicaciones web se tornan más complejas o grandes, el código JavaScript puede volverse difícil de mantener y entender. Esto puede llevar a problemas de legibilidad, errores y dificultades para trabajar en equipo con proyectos grandes.</p>
+</li>
+<li>
+<p>Carga inicial prolongada y rendimiento deficiente en dispositivos móviles:
+Si no se optimiza de manera adecuada, los códigos creados con este tipo de lenguaje pueden aumentar los tiempos de carga de la página, lo que afecta la experiencia del usuario. En dispositivos móviles con conexiones más lentas, esto puede ser problemático.</p>
+</li>
+<li>
+<p>Obsolescencia de las versiones antiguas:
+Algunas características de las versiones antiguas de JavaScript pueden volverse obsoletas o no recomendadas. Esto puede ocasionar problemas de compatibilidad y dificultades en la migración de código.</p>
+</li>
+</ul>
+<h2 id="%C2%BFcu%C3%A1les-son-los-tipos-de-datos-js">¿Cuáles son los tipos de datos JS?</h2>
+<ul>
+<li><mark>Undefined </mark>:
+Representa una variable que no ha sido declarada o a la cual no se le ha asignado un valor.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let x;
+</div></code></pre>
+<ul>
+<li><mark>Boolean </mark>:
+Representa un valor lógico, dos posibles valores; true o false.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let is_true = true;
+let is_false = false;
+</div></code></pre>
+<ul>
+<li><mark>Number </mark>:
+Permite representar y manipular valores numéricos.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let age = 48;
+</div></code></pre>
+<ul>
+<li><mark>String </mark>:
+Representa datos de texto (cadenas de caracteres).</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let name = &quot;Sonia&quot;;
+</div></code></pre>
+<ul>
+<li><mark>BigInt  </mark>:
+Representa valores numéricos que son demasiado grandes para ser representados por el tipo de dato number.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>const number = 9007199254740993n;
+</div></code></pre>
+<ul>
+<li><mark>Symbol </mark>:
+Es un valor primitivo único e inmutable.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let sym = Symbol(&quot;foo&quot;);
+</div></code></pre>
+<ul>
+<li><mark>Null  </mark>:
+Representa la ausencia intencional de cualquier valor, un valor nulo o «vacío».</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let is_null = null;
+</div></code></pre>
+<ul>
+<li><mark>Object  </mark>:
+Representa una colección de datos definidos y entidades más complejas.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let person = {&quot;name&quot;: &quot;Sonia&quot;, &quot;age&quot;: 48, &quot;isAdmin&quot;:true};
+</div></code></pre>
+<ul>
+<li><mark>Function  </mark>:
+Es una forma abreviada para funciones, aunque cada constructor de funciones se deriva del constructor Object. Son objetos con la capacidad de ser ejecutables.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>const Hola = (a) =&gt; {
+   return &quot;Hola &quot; + a;
+};
+</div></code></pre>
+<p>Para hacer la llamada:</p>
+<pre class="hljs"><code><div>Hola(&quot;Sonia&quot;)
+</div></code></pre>
+<h2 id="%C2%BFcu%C3%A1les-son-las-funciones-de-strings-m%C3%A1s-comunes-en-js">¿Cuáles son las funciones de strings más comunes en JS?</h2>
+<h3 id="marklengthmark"><mark>Length</mark></h3>
+<p>Encontrar la longuitud de una cadena.</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.length
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+textoTipico.length;
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>43
+</div></code></pre>
+<h3 id="markcharatmark"><mark>CharAt</mark></h3>
+<p>Extrayendo un caracter específico de la cadena.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Recuerde las posiciones empiezan contando desde el 0.</p>
+</blockquote>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.charAt(indice)
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+</div></code></pre>
+<p>Dependiendo de la posición que pidamos nos mostrará el caracter de esa posición:</p>
+<pre class="hljs"><code><div>textoTipico.charAt(4);
+q
+</div></code></pre>
+<pre class="hljs"><code><div>textoTipico.charAt(0);
+T
+</div></code></pre>
+<p>Si pasamos una posición mayor entonces nos devuelve una cadena vacía.</p>
+<pre class="hljs"><code><div>textoTipico.charAt(300);
+''
+</div></code></pre>
+<h3 id="markconcatmark"><mark>Concat</mark></h3>
+<p>Concatena, une dos o más cadensa o arrays, es decir, se puede usar con cadenas o arreglos</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.concat(str2 [, ...strN])
+</div></code></pre>
+<ul>
+<li>Cadenas</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let textoPlus = &quot; again and again&quot;;
+
+textoTipico.concat(textoPlus);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'The quick brown fox jumps over the lazy dog again and again'
+</div></code></pre>
+<ul>
+<li>Arrays</li>
+</ul>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let aTipico =  [&quot;Cecilie&quot;, &quot;Lone&quot;];
+let arr2 = [&quot;Emil&quot;, &quot;Tobias&quot;, &quot;Linus&quot;];
+let arr3 = [&quot;Robin&quot;];
+
+aTipico.concat(arr2, arr3);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>(6) ['Cecilie', 'Lone', 'Emil', 'Tobias', 'Linus', 'Robin']
+</div></code></pre>
+<h3 id="markincludesmark"><mark>Includes</mark></h3>
+<p>Comprueba si una cadena esta incluida en otra cadena de texto, devolviendo true ó false según corresponda.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Recuerde JavaScript es un lenguaje que distingue entre mayúsculas y minúsculas..</p>
+</blockquote>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.includes(searchString[, position])
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let word = 'fox';
+
+textoTipico.includes(word);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>true
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let word = 'foxy';
+
+textoTipico.includes(word);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>false
+</div></code></pre>
+<h3 id="markstartwithmark"><mark>StartWith</mark></h3>
+<p>El método startsWith() indica si una cadena de texto comienza con los caracteres de una cadena de texto concreta, devolviendo true o false según corresponda.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Recuerde JavaScript es un lenguaje que distingue entre mayúsculas y minúsculas..</p>
+</blockquote>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.startsWith(stringBuscada[, posicion])
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let texto = 'The';
+
+textoTipico.startsWith(texto);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>true
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let texto = 'the';
+
+textoTipico.startsWith(texto);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>false
+</div></code></pre>
+<h3 id="markendswithmark"><mark>EndsWith</mark></h3>
+<p>El método endsWith() determina si una cadena de texto termina con los caracteres de una cadena indicada, devolviendo true o false según corresponda.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Recuerde JavaScript es un lenguaje que distingue entre mayúsculas y minúsculas..</p>
+</blockquote>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.endsWith(searchString[, position])
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let texto = 'lazy dog';
+
+textoTipico.endsWith(texto);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>true
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let texto = 'lazy doggy';
+
+textoTipico.endsWith(texto);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>false
+</div></code></pre>
+<h3 id="markreplacemark"><mark>Replace</mark></h3>
+<p>El método replace() reemplaza palabras de una cadena por otra que le pasemos.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Este método no cambia el valor de la cadena sobre la que se realiza la llamada. Devuelve una nueva cadena.</p>
+</blockquote>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.replace(patrón, reemplazo)
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+textoTipico.replace(&quot;dog&quot;, 'cat');
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'The quick brown fox jumps over the lazy cat'
+</div></code></pre>
+<h3 id="markrepeatmark"><mark>Repeat</mark></h3>
+<p>El método repeat() construye y devuelve una nueva cadena que contiene el número especificado de copias de la cadena en la cual fue llamada, concatenados.</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.repeat(count)
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let greeting = &quot;Hi World&quot;;
+greeting.repeat(2);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'Hi WorldHi World'
+</div></code></pre>
+<h3 id="markmatchmark"><mark>Match</mark></h3>
+<p>El método match() devuelve todas las ocurrencias de una expresión regular dentro de una cadena.</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.match(regexp)
+</div></code></pre>
+<p>Ejemplo que obtiene solo las letras mayúsculas según una expresión regular:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+let regex = /[A-Z]/g; 
+let found = textoTipico.match(regex);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>['T']
+</div></code></pre>
+<h3 id="markindexofmark"><mark>IndexOf</mark></h3>
+<p>El método indexOf() devuelve el índice ó posición, dentro del objeto String que realiza la llamada, de la primera ocurrencia del valor especificado, comenzando la búsqueda desde indice que puede ser un entero entre 0 y la longitud de la cadena. El valor predeterminado es 0.
+Devuelve -1 si no se encuentra dicho valor.</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>str.indexOf(valorBusqueda[, indiceDesde])
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let textoTipico = &quot;The quick brown fox jumps over the lazy dog&quot;;
+
+textoTipico.indexOf(&quot;quick&quot;); // returns 4
+textoTipico.indexOf(&quot;pink&quot;); // returns -1
+textoTipico.indexOf(&quot;quick&quot;, 0); // returns 4
+textoTipico.indexOf(&quot;quick&quot;, 5); // returns -1
+</div></code></pre>
+<h2 id="%C2%BFqu%C3%A9-es-un-condicional">¿Qué es un condicional?</h2>
+<p>Al hacer un programa necesitaremos establecer condiciones o decisiones, donde buscamos que se realice una acción A si se cumple una condición o una acción B si no se cumple. Este es el primer tipo de estructuras de control que encontraremos.</p>
+<p>Tenemos varias estructuras de control condicionales:</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>If</td>
+<td>Condición simple: Si ocurre algo, haz lo siguiente...</td>
+</tr>
+<tr>
+<td>If/else</td>
+<td>Condición alternativa: Si ocurre algo, haz esto, sino haz esto otro.</td>
+</tr>
+<tr>
+<td>?:</td>
+<td>Operador ternario: Equivalente a If/else.</td>
+</tr>
+<tr>
+<td>switch</td>
+<td>Esctructura para casos específicos: Equivalente a If/else.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  Cuando escribimos código, por lo general, se lee de forma secuencial, es decir, una línea detrás de otra, desde arriba hacia abajo.</p>
+</blockquote>
+<p>A continuación vamos a centrarnos en las condiciones simples y alternativas.</p>
+<h3 id="markifmark"><mark>If</mark></h3>
+<p>Condición simple: Si ocurre algo, haz lo siguiente...</p>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let age = 19;
+
+// Condición (si soy mayor de edad)
+if (age &gt;= 18) {
+  console.log(&quot;¡Puede entrar a la disco!&quot;);
+}
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'¡Puede entrar a la disco!'
+</div></code></pre>
+<h3 id="markifelsemark"><mark>If/else</mark></h3>
+<p>Condición alternativa: Si ocurre algo, haz esto, sino haz esto otro.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> Es posible que necesitemos crear un condicional múltiple con más de 2 condiciones. Para ello, podemos anidar varios if/else uno dentro de otro. Sin embargo, anidar de esta forma varios if suele ser muy poco legible y produce un código repetitivo. En algunos casos se podría utilizar otra estructura de control llamada switch.</p>
+</blockquote>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let age = 13;
+
+// Condición (si soy mayor de edad)
+if (age &gt;= 18) {
+  console.log(&quot;¡Puede entrar a la disco!&quot;);
+} else {
+  console.log(&quot;No puede entrar&quot;)
+}
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'No puede entrar'
+</div></code></pre>
+<h3 id="markswitchmark"><mark>Switch</mark></h3>
+<p>La estructura de control switch permite definir casos específicos a realizar cuando la variable expuesta como condición sea igual a los valores que se especifican a continuación mediante cada case:</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> El switch comienza evaluando el primer case, y continua con el resto, hacia abajo.Observa que algunos case tienen un break. Esto hace que deje de evaluar y se salga del switch. El caso especial default es como un else. Si no entra en ninguno de los anteriores, entra en default.</p>
+</blockquote>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let nota = 7;
+console.log(&quot;He realizado mi examen. Mi resultado es el siguiente:&quot;);
+
+switch (nota) {
+  case 10:
+    calificacion = &quot;Sobresaliente&quot;;
+    break;
+  case 9:
+  case 8:
+    calificacion = &quot;Notable&quot;;
+    break;
+  case 7:
+  case 6:
+    calificacion = &quot;Bien&quot;;
+    break;
+  case 5:
+    calificacion = &quot;Suficiente&quot;;
+    break;
+  case 4:
+  case 3:
+  case 2:
+  case 1:
+  case 0:
+    calificacion = &quot;Insuficiente&quot;;
+    break;
+  default:
+    // Cualquier otro caso
+    calificacion = &quot;Nota errónea&quot;;
+    break;
+}
+
+console.log(&quot;He obtenido un&quot;, calificacion);
+</div></code></pre>
+<h2 id="%C2%BFqu%C3%A9-es-un-operador-ternario">¿Qué es un operador ternario?</h2>
+<p>El <mark>operador ternario</mark> es una forma alternativa y compacta de escribir una condición.</p>
+<p>Sintaxis:</p>
+<pre class="hljs"><code><div>condición ? valor verdadero : valor falso;
+</div></code></pre>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>let age = 13;
+age &gt;= 18 ? console.log(&quot;¡Puede entrar a la disco!&quot;) : console.log(&quot;No puede entrar&quot;);
+</div></code></pre>
+<p>Devuelve:</p>
+<pre class="hljs"><code><div>'No puede entrar'
+</div></code></pre>
+<h2 id="%C2%BFdeclaraci%C3%B3n-de-funci%C3%B3n-o-expresi%C3%B3n-de-funci%C3%B3n">¿Declaración de función o expresión de función?</h2>
+<p>Las funciones son valores. Se pueden asignar, copiar o declarar en cualquier lugar del código.
+Si la función se declara como una declaración separada en el flujo del código principal, eso se llama <mark>Declaración de función</mark>.
+Si la función se crea como parte de una expresión, se llama <mark>Expresión de función</mark>.</p>
+<p>Ejemplo declaración de función:</p>
+<pre class="hljs"><code><div>function gretting(name) {
+  console.log( `Hola, ${name}` );
+}
+</div></code></pre>
+<p>Llamada:</p>
+<pre class="hljs"><code><div>gretting(&quot;Sonia&quot;); // Hola, Sonia
+</div></code></pre>
+<p>Ejemplo expresión de función:</p>
+<pre class="hljs"><code><div>let gretting = function(name) {
+  console.log( `Hola, ${name}` );
+};
+</div></code></pre>
+<p>Llamada:</p>
+<pre class="hljs"><code><div>gretting(&quot;Sonia&quot;); // Hola, Sonia
+</div></code></pre>
+<h2 id="%C2%BFqu%C3%A9-es-la-palabra-clave-this">¿Qué es la palabra clave 'this'?</h2>
+<p><mark>This</mark> es una palabra clave muy utilizada dentro de funciones y clases, pues tiene un valor flexible. Cómo su nombre indica, hace referencia al objeto en cuestión. Es decir, si estamos creando cualquier función, la palabra clave this se usará para representar o llamar al objeto que dicha función está modificando.</p>
+<h3 id="this-como-objeto-global">This como objeto global</h3>
+<p>Si se coloca código fuera de cualquier función e intentamos ver el contenido de this, entonces hablamos del contexto global.</p>
+<p>Ejemplo:</p>
+<pre class="hljs"><code><div>console.log(this);
+</div></code></pre>
+<p>Si está en un navegador nos devolverá el objeto &quot;window&quot;.</p>
+<h3 id="this-en-el-contexto-de-una-funci%C3%B3n">This en el contexto de una función</h3>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> No se puede saber el valor que tendrá la variable &quot;this&quot; al ver el código de una función, porque depende de cómo se haya invocado a esa función.</p>
+</blockquote>
+<p>A continuación algunos ejemplos:</p>
+<ul>
+<li>Si la función es el método de un objeto y se invoca, this es el objeto en sí mismo.</li>
+</ul>
+<pre class="hljs"><code><div>Ejemplo:
+const me = {
+  name: 'Sonia D.',
+  sayMyName() {
+    return this.name
+  },
+}
+
+console.log(me.sayMyName()) // 'Sonia D.'
+</div></code></pre>
+<ul>
+<li>Cuando se define una función y luego se asigna como método de un objeto, this dentro de la función se refiere al objeto al que se ha asignado la función.</li>
+</ul>
+<pre class="hljs"><code><div>function sayHello() {
+  console.log(`Hola, soy ${this.name}.`)
+}
+
+const person = {
+  name: 'Sonia',
+  greet: sayHello, // asignamos 'sayHello' a la propiedad 'greet'
+}
+
+person.greet() // Hola, soy Sonia.
+</div></code></pre>
+
+</body>
+</html>
